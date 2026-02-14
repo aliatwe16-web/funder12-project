@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- =========================
+       StudySphere - index.html
+       Pure HTML/CSS/JS (No frameworks)
+       ========================= -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudySphere — Student Productivity</title>
+
+    <!-- App styles -->
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <!-- =========================
+       App Shell
+       ========================= -->
+    <div class="app" id="appRoot">
+        <!-- =========================
+         Header / Navbar
+         ========================= -->
+        <header class="topbar">
+            <div class="brand">
+                <div class="logo" aria-hidden="true">◐</div>
+                <div class="brandText">
+                    <div class="brandName">StudySphere</div>
+                    <div class="brandTag">Focus • Plan • Achieve</div>
+                </div>
+            </div>
+
+            <nav class="topnav" aria-label="Top navigation">
+                <button class="chip is-active" data-quick="overview" title="Overview">Overview</button>
+                <button class="chip" data-quick="pomodoro" title="Pomodoro">Pomodoro</button>
+                <button class="chip" data-quick="today" title="Today's Focus">Today</button>
+            </nav>
+
+            <div class="topActions">
+                <!-- Theme Toggle -->
+                <button class="iconBtn" id="themeToggle" aria-label="Toggle theme" data-tooltip="Toggle Light/Dark">
+                    <span class="icon" aria-hidden="true">☾</span>
+                </button>
+
+                <!-- Profile Icon -->
+                <button class="profileBtn" aria-label="User profile" data-tooltip="Profile">
+                    <span class="avatar" aria-hidden="true">👤</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- =========================
+         Layout: Sidebar + Main
+         ========================= -->
+        <div class="layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" aria-label="Dashboard navigation">
+                <div class="sidebarHeader">
+                    <div class="sidebarTitle">Dashboard</div>
+                    <div class="sidebarSubtitle">Your study command center</div>
+                </div>
+
+                <div class="navList">
+                    <button class="navItem is-active" data-section="tasks">
+                        <span class="navIcon" aria-hidden="true">✅</span>
+                        <span>Tasks</span>
+                        <span class="navBadge" id="badgeTasks">0</span>
+                    </button>
+
+                    <button class="navItem" data-section="notes">
+                        <span class="navIcon" aria-hidden="true">🗒️</span>
+                        <span>Notes</span>
+                        <span class="navBadge" id="badgeNotes">0</span>
+                    </button>
+
+                    <button class="navItem" data-section="timetable">
+                        <span class="navIcon" aria-hidden="true">🗓️</span>
+                        <span>Timetable</span>
+                    </button>
+
+                    <button class="navItem" data-section="assignments">
+                        <span class="navIcon" aria-hidden="true">📌</span>
+                        <span>Assignments</span>
+                        <span class="navBadge" id="badgeAssignments">0</span>
+                    </button>
+
+                    <button class="navItem" data-section="flashcards">
+                        <span class="navIcon" aria-hidden="true">🃏</span>
+                        <span>Flashcards</span>
+                        <span class="navBadge" id="badgeDecks">0</span>
+                    </button>
+
+                    <button class="navItem" data-section="studyroom">
+                        <span class="navIcon" aria-hidden="true">🎧</span>
+                        <span>Study Room</span>
+                    </button>
+                </div>
+                <!-- =========================
+   NEW CODE BEGIN — Extra Sidebar Sections (Goals / Habits / Insights)
+   Paste inside: <div class="navList"> ... </div>
+   ========================= -->
+                <button class="navItem" data-ssx-panel="goals">
+                    <span class="navIcon" aria-hidden="true">🎯</span>
+                    <span>Goals</span>
+                    <span class="navBadge" id="ssxBadgeGoals">0</span>
+                </button>
+
+                <button class="navItem" data-ssx-panel="habits">
+                    <span class="navIcon" aria-hidden="true">🔥</span>
+                    <span>Habits</span>
+                    <span class="navBadge" id="ssxBadgeHabits">0</span>
+                </button>
+
+                <button class="navItem" data-ssx-panel="insights">
+                    <span class="navIcon" aria-hidden="true">📈</span>
+                    <span>Insights</span>
+                </button>
+                <!-- =========================
+   NEW CODE END — Extra Sidebar Sections
+   ========================= -->
+
+
+
+                <!-- Sidebar footer mini card -->
+                <div class="sideCard">
+                    <div class="sideCardTitle">Pomodoro</div>
+                    <div class="sideCardRow">
+                        <div class="miniTimer" id="miniTimer">25:00</div>
+                        <button class="btn small" id="miniTimerStart" data-tooltip="Start/Pause">Start</button>
+                    </div>
+                    <div class="sideCardHint">Quick focus sessions, right from the sidebar.</div>
+                </div>
+            </aside>
+
+            <!-- Main content area (dynamic) -->
+            <main class="main" aria-live="polite">
+                <!-- Top of main: title + action bar -->
+                <div class="mainHeader">
+                    <div class="mainTitleWrap">
+                        <h1 class="mainTitle" id="sectionTitle">Tasks</h1>
+                        <p class="mainSubtitle" id="sectionSubtitle">Plan your day and crush your goals.</p>
+                    </div>
+
+                    <div class="mainActions" id="mainActions">
+                        <!-- Filled dynamically based on section -->
+                    </div>
+                </div>
+
+                <!-- Content container replaced dynamically -->
+                <div class="content" id="contentRoot">
+                    <!-- JS renders here -->
+                </div>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div>© <span id="year"></span> StudySphere • Built with HTML/CSS/JS</div>
+                    <div class="footerHint">Tip: Your data is saved locally in this browser.</div>
+                </footer>
+            </main>
+        </div>
+
+        <!-- =========================
+         Modals (Add/Edit)
+         - One reusable modal shell
+         ========================= -->
+        <div class="modalOverlay" id="modalOverlay" aria-hidden="true">
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+                <div class="modalHeader">
+                    <div>
+                        <div class="modalTitle" id="modalTitle">Modal Title</div>
+                        <div class="modalSubtitle" id="modalSubtitle">Modal subtitle</div>
+                    </div>
+                    <button class="iconBtn" id="modalClose" aria-label="Close modal" data-tooltip="Close">✕</button>
+                </div>
+
+                <form class="modalBody" id="modalForm">
+                    <!-- Form fields injected by JS -->
+                </form>
+
+                <div class="modalFooter">
+                    <button class="btn ghost" id="modalCancel" type="button">Cancel</button>
+                    <button class="btn" id="modalSave" type="submit" form="modalForm">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toasts -->
+        <div class="toasts" id="toastRoot" aria-live="polite" aria-atomic="true"></div>
+    </div>
+    <!-- =========================
+   NEW CODE BEGIN — SSX Drawers + Quick Add + Modal (self-contained)
+   Paste inside: <div class="app" id="appRoot"> ... </div> near the end
+   ========================= -->
+
+    <!-- Floating Quick Add Button -->
+    <button class="ssx-fab" id="ssxFab" aria-label="Quick add" title="Quick add">
+        <span aria-hidden="true">＋</span>
+    </button>
+
+    <!-- Right-side Drawer Overlay -->
+    <div class="ssx-drawerOverlay" id="ssxDrawerOverlay" aria-hidden="true"></div>
+
+    <!-- Right-side Drawer -->
+    <section class="ssx-drawer" id="ssxDrawer" aria-hidden="true" aria-label="Side panel">
+        <header class="ssx-drawerHeader">
+            <div>
+                <div class="ssx-drawerTitle" id="ssxDrawerTitle">Panel</div>
+                <div class="ssx-drawerSubtitle" id="ssxDrawerSubtitle">Subtitle</div>
+            </div>
+            <button class="ssx-iconBtn" id="ssxDrawerClose" aria-label="Close panel">✕</button>
+        </header>
+
+        <div class="ssx-drawerBody" id="ssxDrawerBody">
+            <!-- Injected by SSX JS -->
+        </div>
+    </section>
+
+    <!-- SSX Modal (independent from your existing modal to avoid conflicts) -->
+    <div class="ssx-modalOverlay" id="ssxModalOverlay" aria-hidden="true">
+        <div class="ssx-modal" role="dialog" aria-modal="true" aria-labelledby="ssxModalTitle">
+            <header class="ssx-modalHeader">
+                <div>
+                    <div class="ssx-modalTitle" id="ssxModalTitle">Quick Add</div>
+                    <div class="ssx-modalSubtitle" id="ssxModalSubtitle">Capture something in 10 seconds.</div>
+                </div>
+                <button class="ssx-iconBtn" id="ssxModalClose" aria-label="Close">✕</button>
+            </header>
+
+            <form class="ssx-modalBody" id="ssxModalForm">
+                <label class="ssx-field">
+                    <span class="ssx-label">Type</span>
+                    <select class="ssx-input" name="type" required>
+                        <option value="goal">Goal</option>
+                        <option value="habit">Habit</option>
+                        <option value="note">Note</option>
+                    </select>
+                </label>
+
+                <label class="ssx-field">
+                    <span class="ssx-label">Title</span>
+                    <input class="ssx-input" name="title" type="text" placeholder="e.g., Finish Biology chapter 3"
+                        required />
+                </label>
+
+                <label class="ssx-field">
+                    <span class="ssx-label">Details (optional)</span>
+                    <textarea class="ssx-input ssx-textarea" name="details" rows="3"
+                        placeholder="Any context…"></textarea>
+                </label>
+
+                <label class="ssx-field ssx-row">
+                    <span class="ssx-label">Target / Frequency</span>
+                    <input class="ssx-input" name="meta" type="text" placeholder="e.g., 5 hours / week OR daily" />
+                </label>
+
+                <div class="ssx-hint">Saved locally in this browser (no account needed).</div>
+            </form>
+
+            <footer class="ssx-modalFooter">
+                <button class="ssx-btn ghost" id="ssxModalCancel" type="button">Cancel</button>
+                <button class="ssx-btn" type="submit" form="ssxModalForm">Save</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- =========================
+   NEW CODE END — SSX Drawers + Quick Add + Modal
+   ========================= -->
+
+
+    <!-- App logic -->
+    <script src="app.js"></script>
+</body>
+
+</html>
