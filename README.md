@@ -6,7 +6,7 @@
 
 ## 🚀 Project Description
 
-This CodePen project is a student-focused dashboard called **StudySphere** that helps users organize tasks, schedule studies, and track progress — built using HTML, CSS, and JavaScript.
+This project is a student-focused dashboard called **StudySphere** that helps users organize tasks, schedule studies, and track progress — built using HTML, CSS, and JavaScript.
 
 ---
 
