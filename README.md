@@ -71,13 +71,7 @@ Saved time and ensured professional documentation structure.
 
 ---
 
-## 📁 How to Use
 
-1. Open the project on CodePen.
-2. Fork or edit the project.
-3. Modify and expand features as needed.
-
----
 
 ## 📜 License
 
